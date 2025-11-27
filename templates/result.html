@@ -1,0 +1,146 @@
+{% extends "base.html" %} {% block title %}Analysis Results - AI Finance Coach{%
+endblock %} {% block content %}
+<div class="container">
+  <div class="result-header">
+    <h1>📊 Your Financial Analysis</h1>
+    <p>AI-powered insights based on your financial data</p>
+  </div>
+
+  <div class="result-stats">
+    <div class="stat-card">
+      <div class="stat-label">Monthly Income</div>
+      <div class="stat-value">${{ "%.2f"|format(salary) }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Total Expenses</div>
+      <div class="stat-value negative">
+        ${{ "%.2f"|format(total_expenses) }}
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Remaining Balance</div>
+      <div
+        class="stat-value {% if remaining >= 0 %}positive{% else %}negative{% endif %}"
+      >
+        ${{ "%.2f"|format(remaining) }}
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Savings Goal</div>
+      <div class="stat-value">${{ "%.2f"|format(savings_goal) }}</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="color: var(--primary); margin-bottom: 1rem">
+      📈 Expense Breakdown
+    </h2>
+    <div class="chart-container">
+      <canvas id="expenseChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="color: var(--primary); margin-bottom: 1rem">
+      💰 Income vs Expenses
+    </h2>
+    <div class="chart-container">
+      <canvas id="comparisonChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="color: var(--primary); margin-bottom: 1rem">
+      🤖 AI Financial Advisor
+    </h2>
+    <div class="ai-analysis">{{ ai_analysis }}</div>
+  </div>
+
+  <div style="text-align: center; margin: 2rem 0">
+    <a href="/finance-form" class="btn">Analyze Again</a>
+    <a href="/" class="btn btn-primary">Back to Home</a>
+  </div>
+</div>
+
+{% block extra_js %}
+<script>
+  // Expense Breakdown Pie Chart
+  const expenseData = {
+    labels: ['Rent', 'Food', 'Transportation', 'Utilities', 'Entertainment', 'Other'],
+    datasets: [{
+      data: [
+        {{ expenses.rent }},
+        {{ expenses.food }},
+        {{ expenses.transportation }},
+        {{ expenses.utilities }},
+        {{ expenses.entertainment }},
+        {{ expenses.other }}
+      ],
+      backgroundColor: [
+        '#6366f1',
+        '#10b981',
+        '#f59e0b',
+        '#ef4444',
+        '#8b5cf6',
+        '#64748b'
+      ]
+    }]
+  };
+
+  const expenseChart = new Chart(document.getElementById('expenseChart'), {
+    type: 'doughnut',
+    data: expenseData,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        },
+        title: {
+          display: true,
+          text: 'Where Your Money Goes'
+        }
+      }
+    }
+  });
+
+  // Income vs Expenses Bar Chart
+  const comparisonData = {
+    labels: ['Income', 'Expenses', 'Remaining'],
+    datasets: [{
+      label: 'Amount ($)',
+      data: [
+        {{ salary }},
+        {{ total_expenses }},
+        {{ remaining }}
+      ],
+      backgroundColor: [
+        '#10b981',
+        '#ef4444',
+        {% if remaining >= 0 %}'#6366f1'{% else %}'#f59e0b'{% endif %}
+      ]
+    }]
+  };
+
+  const comparisonChart = new Chart(document.getElementById('comparisonChart'), {
+    type: 'bar',
+    data: comparisonData,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+{% endblock %} {% endblock %}

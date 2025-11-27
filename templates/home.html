@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block title %}Home - AI Finance Coach{% endblock %}
+{% block content %}
+<div class="hero">
+  <h1>🚀 AI-Powered Finance Coach</h1>
+  <p>Get personalized financial advice powered by artificial intelligence</p>
+  <a href="/finance-form" class="btn">Start Your Analysis</a>
+</div>
+
+<div class="container">
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-icon">💡</div>
+      <h3>Smart Analysis</h3>
+      <p>
+        AI analyzes your income and expenses to provide personalized insights
+        and recommendations.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Visual Reports</h3>
+      <p>
+        Beautiful charts and graphs help you understand your spending patterns
+        at a glance.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3>Goal Tracking</h3>
+      <p>Set savings goals and get actionable steps to achieve them faster.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">💰</div>
+      <h3>Budget Planning</h3>
+      <p>
+        Receive customized budget recommendations based on your financial
+        situation.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Instant Results</h3>
+      <p>Get comprehensive financial advice in seconds with the power of AI.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Secure & Private</h3>
+      <p>
+        Your financial data is stored securely and never shared with third
+        parties.
+      </p>
+    </div>
+  </div>
+
+  <div class="card" style="text-align: center; margin-top: 3rem">
+    <h2 style="color: var(--primary); margin-bottom: 1rem">How It Works</h2>
+    <div
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      "
+    >
+      <div>
+        <h3 style="color: var(--secondary)">1. Enter Data</h3>
+        <p>Input your salary, expenses, and savings goals</p>
+      </div>
+      <div>
+        <h3 style="color: var(--secondary)">2. AI Analysis</h3>
+        <p>Our AI processes your financial information</p>
+      </div>
+      <div>
+        <h3 style="color: var(--secondary)">3. Get Insights</h3>
+        <p>Receive personalized advice and recommendations</p>
+      </div>
+    </div>
+    <a href="/finance-form" class="btn btn-primary" style="margin-top: 2rem"
+      >Get Started Now</a
+    >
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends "base.html" %} {% block title %}Admin Dashboard - AI Finance Coach{%
+endblock %} {% block content %}
+<div class="container">
+  <div class="card">
+    <div class="admin-header">
+      <h1 style="color: var(--primary)">🛠️ Admin Dashboard</h1>
+      <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+
+    <p style="color: var(--gray); margin-bottom: 2rem">
+      Total Submissions: <strong>{{ entries|length }}</strong>
+    </p>
+
+    {% if entries %}
+    <div style="overflow-x: auto">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date & Time</th>
+            <th>Salary</th>
+            <th>Total Expenses</th>
+            <th>Remaining</th>
+            <th>Savings Goal</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in entries|reverse %}
+          <tr>
+            <td><strong>#{{ entry.id }}</strong></td>
+            <td>{{ entry.timestamp }}</td>
+            <td>${{ "%.2f"|format(entry.salary) }}</td>
+            <td>${{ "%.2f"|format(entry.total_expenses) }}</td>
+            <td>
+              <span
+                class="{% if entry.remaining >= 0 %}badge badge-success{% else %}badge badge-danger{% endif %}"
+              >
+                ${{ "%.2f"|format(entry.remaining) }}
+              </span>
+            </td>
+            <td>${{ "%.2f"|format(entry.savings_goal) }}</td>
+            <td>
+              {% if entry.remaining >= entry.savings_goal %}
+              <span class="badge badge-success">✓ Goal Met</span>
+              {% else %}
+              <span class="badge badge-danger">✗ Below Goal</span>
+              {% endif %}
+            </td>
+            <td>
+              <button
+                onclick="showDetails({{ entry.id }})"
+                class="btn btn-sm btn-primary"
+              >
+                View
+              </button>
+              <a
+                href="/delete-entry/{{ entry.id }}"
+                onclick="return confirm('Are you sure you want to delete this entry?')"
+                class="btn btn-sm btn-danger"
+              >
+                Delete
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Hidden details sections -->
+    {% for entry in entries %}
+    <div
+      id="details-{{ entry.id }}"
+      style="
+        display: none;
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: var(--light);
+        border-radius: 8px;
+      "
+    >
+      <h3 style="color: var(--primary)">
+        Entry #{{ entry.id }} - Detailed View
+      </h3>
+
+      <h4 style="margin-top: 1rem">Expense Breakdown:</h4>
+      <ul>
+        {% for key, value in entry.expenses.items() %}
+        <li><strong>{{ key|title }}:</strong> ${{ "%.2f"|format(value) }}</li>
+        {% endfor %}
+      </ul>
+
+      {% if entry.notes %}
+      <h4 style="margin-top: 1rem">Notes:</h4>
+      <p style="background: white; padding: 1rem; border-radius: 8px">
+        {{ entry.notes }}
+      </p>
+      {% endif %}
+
+      <h4 style="margin-top: 1rem">AI Analysis:</h4>
+      <div
+        style="
+          background: white;
+          padding: 1rem;
+          border-radius: 8px;
+          white-space: pre-wrap;
+        "
+      >
+        {{ entry.ai_analysis }}
+      </div>
+
+      <button
+        onclick="hideDetails({{ entry.id }})"
+        class="btn btn-sm"
+        style="margin-top: 1rem"
+      >
+        Close
+      </button>
+    </div>
+    {% endfor %} {% else %}
+    <div style="text-align: center; padding: 3rem; color: var(--gray)">
+      <h3>No submissions yet</h3>
+      <p>Financial analysis submissions will appear here</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% block extra_js %}
+<script>
+  function showDetails(id) {
+    document.getElementById("details-" + id).style.display = "block";
+  }
+
+  function hideDetails(id) {
+    document.getElementById("details-" + id).style.display = "none";
+  }
+</script>
+{% endblock %} {% endblock %}
